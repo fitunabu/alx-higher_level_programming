@@ -1,23 +1,25 @@
 #!/usr/bin/python3
-"""
-Provides a function to find a peak element in an unsorted list of integers
-"""
+"""Finds the peak in an unsorted list of integers"""
 
 
-
-def find_peak(integers):
-    """
-    Finds a peak element in an unsorted list of integers
-    """
-    if not integers:
+def find_peak(list_of_integers):
+    """Finds the peak in an unsorted list of ints"""
+    if len(list_of_integers) > 1:
+        if list_of_integers[0] >= list_of_integers[1]:
+            return list_of_integers[0]
+        if list_of_integers[-1] >= list_of_integers[-2]:
+            return list_of_integers[-1]
+        return _find_peak(list_of_integers, 0, len(list_of_integers))
+    if not list_of_integers:
         return None
-    if len(integers) == 1:
-        return integers[0]
-    if len(integers) == 2:
-        return integers[0] if integers[0] > integers[1] else integers[1]
-    midpoint = len(integers) // 2
-    if integers[midpoint] < integers[midpoint - 1]:
-        return find_peak(integers[:midpoint])
-    if integers[midpoint] < integers[midpoint + 1]:
-        return find_peak(integers[midpoint + 1:])
-    return integers[midpoint]
+    return list_of_integers[0]
+
+
+def _find_peak(lint, start, stop):
+    """Recursively finds peak"""
+    if stop - start < 2:
+        return None
+    mid = (start + stop) // 2
+    if lint[mid] >= lint[mid - 1] and lint[mid] >= lint[mid + 1]:
+        return lint[mid]
+    return _find_peak(lint, start, mid) or _find_peak(lint, mid, stop)
